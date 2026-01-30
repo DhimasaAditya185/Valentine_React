@@ -98,10 +98,33 @@ scene.add(warmLight);
 // ==================== CUSTOM 3D MODEL =======================
 // ============================================================
 
-// OBJECT SETTINGS - Adjust these values
-const OBJECT_SCALE = 5;           // Size of your object
-const OBJECT_POSITION_Y = -4;      // Vertical position (negative = lower)
+// OBJECT SETTINGS - Base values (will be adjusted for screen size)
 const OBJECT_ROTATION_SPEED = 0.3;  // How fast it rotates (0 = no rotation)
+
+// Responsive settings function
+function getResponsiveSettings() {
+  const isMobile = window.innerWidth < 768;
+  const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
+
+  if (isMobile) {
+    return {
+      scale: 3,           // Smaller on mobile
+      positionY: -2.5     // Higher on mobile (less negative)
+    };
+  } else if (isTablet) {
+    return {
+      scale: 4,
+      positionY: -3
+    };
+  } else {
+    return {
+      scale: 5,           // Desktop size
+      positionY: -4
+    };
+  }
+}
+
+let responsiveSettings = getResponsiveSettings();
 
 // ============================================================
 // ==================== LOAD THE MODEL ========================
@@ -115,7 +138,7 @@ loader.load(
   '/model/lily_blossom.glb',
   (gltf) => {
     const model = gltf.scene;
-    model.scale.setScalar(OBJECT_SCALE);
+    model.scale.setScalar(responsiveSettings.scale);
 
     // Center the model based on its bounding box
     const box = new THREE.Box3().setFromObject(model);
@@ -138,7 +161,7 @@ loader.load(
 );
 
 // Position the model group in front of camera (camera is at z=10)
-flowers.position.set(0, OBJECT_POSITION_Y, 0);
+flowers.position.set(0, responsiveSettings.positionY, 0);
 scene.add(flowers);
 
 // ==================== FLOATING HEARTS ====================
@@ -381,29 +404,30 @@ function animate() {
     messageContainer.style.opacity = 1;
   }
 
-  // Move rose on scroll
-  let targetY = OBJECT_POSITION_Y;
+  // Move rose on scroll (using responsive position)
+  const baseY = responsiveSettings.positionY;
+  let targetY = baseY;
   let targetScale = 1;
   let targetRotZ = 0;
 
   if (scrollProgress < 0.15) {
-    targetY = OBJECT_POSITION_Y;
+    targetY = baseY;
     targetScale = 1;
     targetRotZ = 0;
   } else if (scrollProgress < 0.35) {
-    targetY = OBJECT_POSITION_Y - 1;
+    targetY = baseY - 1;
     targetScale = 0.85;
     targetRotZ = -0.1;
   } else if (scrollProgress < 0.55) {
-    targetY = OBJECT_POSITION_Y + 0.5;
+    targetY = baseY + 0.5;
     targetScale = 0.8;
     targetRotZ = 0.1;
   } else if (scrollProgress < 0.75) {
-    targetY = OBJECT_POSITION_Y - 0.8;
+    targetY = baseY - 0.8;
     targetScale = 0.75;
     targetRotZ = -0.05;
   } else {
-    targetY = OBJECT_POSITION_Y - 0.2;
+    targetY = baseY - 0.2;
     targetScale = 0.9;
     targetRotZ = 0;
   }
@@ -423,6 +447,16 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
   composer.setSize(window.innerWidth, window.innerHeight);
+
+  // Update responsive settings on resize
+  responsiveSettings = getResponsiveSettings();
+
+  // Update model scale if loaded
+  if (allFlowers.length > 0) {
+    allFlowers.forEach(model => {
+      model.scale.setScalar(responsiveSettings.scale);
+    });
+  }
 });
 
 animate();
