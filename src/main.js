@@ -135,7 +135,7 @@ const allFlowers = [];
 
 const loader = new GLTFLoader();
 loader.load(
-  '/model/lily_blossom.glb',
+  `${import.meta.env.BASE_URL}model/lily_blossom.glb`,
   (gltf) => {
     const model = gltf.scene;
     model.scale.setScalar(responsiveSettings.scale);
