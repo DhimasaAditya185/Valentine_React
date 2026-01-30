@@ -2,9 +2,8 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   // Base URL for deployment
-  // For Vercel: use '/'
-  // For GitHub Pages: use '/Valentine_React/'
-  base: '/',
+  // For GitHub Pages: use repo name
+  base: '/Valentine_React/',
 
   // Build options
   build: {
