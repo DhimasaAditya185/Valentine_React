@@ -339,7 +339,7 @@ function animate() {
 
     // Pulse effect on scroll
     const pulse = 1 + Math.sin(t * 2) * 0.03;
-    flower.scale.setScalar(OBJECT_SCALE * pulse);
+    flower.scale.setScalar(responsiveSettings.scale * pulse);
   });
 
   // Hearts float up
