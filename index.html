@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valentine Rose Bouquet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+
+  <div id="ui">
+    <div id="message-container">
+      <h1 id="title">Happy Valentine's Day</h1>
+      <h2 id="recipient"></h2>
+      <p id="love-message">With all my love</p>
+    </div>
+
+    <div id="scroll-hint">
+      <span>Scroll to bloom</span>
+      <div class="arrow"></div>
+    </div>
+  </div>
+
+  <!-- Romantic scroll sections -->
+  <div id="scroll-sections">
+    <div class="scroll-text" data-section="1">
+      <p class="romantic-line">Every moment with you</p>
+      <p class="romantic-line delay-1">feels like a beautiful dream</p>
+    </div>
+
+    <div class="scroll-text" data-section="2">
+      <p class="romantic-line">You are the reason</p>
+      <p class="romantic-line delay-1">my heart beats faster</p>
+      <div class="floating-hearts">
+        <span>💕</span><span>💗</span><span>💖</span>
+      </div>
+    </div>
+
+    <div class="scroll-text" data-section="3">
+      <p class="romantic-line">In your eyes</p>
+      <p class="romantic-line delay-1">I found my forever</p>
+      <div class="sparkle-container">
+        <span class="sparkle">✨</span>
+        <span class="sparkle">✨</span>
+        <span class="sparkle">✨</span>
+      </div>
+    </div>
+
+    <div class="scroll-text" data-section="4">
+      <p class="romantic-line large">I Love You</p>
+      <p class="romantic-line delay-1">Today, tomorrow, and always</p>
+      <div class="final-heart">❤️</div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

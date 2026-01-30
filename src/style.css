@@ -1,0 +1,459 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+  background: linear-gradient(180deg, #1a0a15 0%, #2d1020 50%, #1a0a15 100%);
+  min-height: 500vh;
+}
+
+#canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+#ui {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px 20px;
+}
+
+#message-container {
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(255, 150, 180, 0.5);
+  opacity: 0;
+  transform: translateY(-30px);
+  transition: all 1s ease;
+}
+
+#message-container.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#title {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 400;
+  color: #ffaabb;
+  margin-bottom: 10px;
+  animation: glow 2s ease-in-out infinite alternate;
+  text-shadow: 0 0 30px rgba(255, 150, 180, 0.8), 0 0 60px rgba(255, 120, 150, 0.5);
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 30px rgba(255, 150, 180, 0.8), 0 0 60px rgba(255, 120, 150, 0.5);
+  }
+  to {
+    text-shadow: 0 0 50px rgba(255, 180, 200, 1), 0 0 80px rgba(255, 150, 180, 0.7), 0 0 120px rgba(255, 100, 150, 0.4);
+  }
+}
+
+#recipient {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 400;
+  color: #ffccdd;
+  margin-bottom: 10px;
+  text-shadow: 0 0 25px rgba(255, 180, 200, 0.8), 0 0 50px rgba(255, 150, 180, 0.5);
+}
+
+#love-message {
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px rgba(255, 200, 220, 0.6);
+}
+
+#input-container {
+  pointer-events: all;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border-radius: 50px;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  transition: all 0.5s ease;
+}
+
+#input-container.hidden {
+  opacity: 0;
+  transform: translateY(50px);
+  pointer-events: none;
+}
+
+#name-input {
+  padding: 15px 25px;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  border: 2px solid rgba(255, 107, 107, 0.5);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  outline: none;
+  min-width: 200px;
+  transition: all 0.3s ease;
+}
+
+#name-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+#name-input:focus {
+  border-color: #ff6b6b;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+}
+
+#send-btn {
+  padding: 15px 35px;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  border: none;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+#send-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+}
+
+#send-btn:active {
+  transform: scale(0.98);
+}
+
+#scroll-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255, 200, 220, 0.7);
+  font-size: 0.9rem;
+  animation: bounce 2s infinite;
+  transition: opacity 0.5s ease;
+}
+
+#scroll-hint.hidden {
+  opacity: 0;
+}
+
+.arrow {
+  width: 20px;
+  height: 20px;
+  border-right: 2px solid rgba(255, 200, 220, 0.7);
+  border-bottom: 2px solid rgba(255, 200, 220, 0.7);
+  transform: rotate(45deg);
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Particle burst effect */
+.heart-particle {
+  position: fixed;
+  font-size: 20px;
+  pointer-events: none;
+  z-index: 100;
+  animation: floatUp 2s ease-out forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-200px) scale(0.5) rotate(360deg);
+  }
+}
+
+/* Romantic scroll sections */
+#scroll-sections {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 15;
+  pointer-events: none;
+}
+
+.scroll-text {
+  position: absolute;
+  text-align: center;
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 90%;
+  max-width: 500px;
+}
+
+/* Position each section differently */
+.scroll-text[data-section="1"] {
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%) translateY(30px);
+}
+
+.scroll-text[data-section="2"] {
+  bottom: 20%;
+  left: 50%;
+  transform: translateX(-50%) translateY(30px);
+}
+
+.scroll-text[data-section="3"] {
+  top: 12%;
+  left: 50%;
+  transform: translateX(-50%) translateY(30px);
+}
+
+.scroll-text[data-section="4"] {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+}
+
+.scroll-text.visible {
+  opacity: 1;
+}
+
+.scroll-text[data-section="1"].visible,
+.scroll-text[data-section="2"].visible,
+.scroll-text[data-section="3"].visible {
+  transform: translateX(-50%) translateY(0);
+}
+
+.scroll-text[data-section="4"].visible {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.scroll-text.fade-out {
+  opacity: 0;
+}
+
+.scroll-text[data-section="1"].fade-out,
+.scroll-text[data-section="2"].fade-out,
+.scroll-text[data-section="3"].fade-out {
+  transform: translateX(-50%) translateY(-30px);
+}
+
+.scroll-text[data-section="4"].fade-out {
+  transform: translate(-50%, -50%) scale(0.9);
+}
+
+.romantic-line {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  color: #fff;
+  margin: 10px 0;
+  text-shadow: 0 0 30px rgba(255, 180, 200, 0.9), 0 0 60px rgba(255, 150, 180, 0.5);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-text.visible .romantic-line {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.romantic-line.delay-1 {
+  transition-delay: 0.3s;
+  color: #ffd0dd;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  text-shadow: 0 0 25px rgba(255, 180, 200, 0.8), 0 0 50px rgba(255, 150, 180, 0.4);
+}
+
+.romantic-line.large {
+  font-size: clamp(3rem, 10vw, 6rem);
+  color: #ffaabb;
+  text-shadow: 0 0 40px rgba(255, 180, 200, 1), 0 0 80px rgba(255, 150, 180, 0.6);
+}
+
+.scroll-text.visible .romantic-line.large {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    text-shadow: 0 0 30px rgba(255, 120, 150, 0.6);
+  }
+  50% {
+    transform: scale(1.05);
+    text-shadow: 0 0 50px rgba(255, 120, 150, 0.9), 0 0 80px rgba(255, 100, 130, 0.5);
+  }
+}
+
+/* Floating hearts animation */
+.floating-hearts {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.floating-hearts span {
+  font-size: 2rem;
+  animation: floatHeart 2s ease-in-out infinite;
+  opacity: 0;
+}
+
+.floating-hearts span:nth-child(1) {
+  animation-delay: 0.5s;
+}
+.floating-hearts span:nth-child(2) {
+  animation-delay: 0.7s;
+}
+.floating-hearts span:nth-child(3) {
+  animation-delay: 0.9s;
+}
+
+.scroll-text.visible .floating-hearts span {
+  opacity: 1;
+}
+
+@keyframes floatHeart {
+  0%, 100% {
+    transform: translateY(0) rotate(-5deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(5deg);
+  }
+}
+
+/* Sparkle animation */
+.sparkle-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+.sparkle {
+  font-size: 1.5rem;
+  opacity: 0;
+  animation: sparkle 1.5s ease-in-out infinite;
+}
+
+.sparkle:nth-child(1) { animation-delay: 0s; }
+.sparkle:nth-child(2) { animation-delay: 0.5s; }
+.sparkle:nth-child(3) { animation-delay: 1s; }
+
+.scroll-text.visible .sparkle {
+  opacity: 1;
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(180deg);
+  }
+}
+
+/* Final heart */
+.final-heart {
+  font-size: 4rem;
+  margin-top: 30px;
+  opacity: 0;
+  animation: heartBeat 1s ease-in-out infinite;
+}
+
+.scroll-text.visible .final-heart {
+  opacity: 1;
+}
+
+@keyframes heartBeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.3);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.3);
+  }
+  70% {
+    transform: scale(1);
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  #input-container {
+    flex-direction: column;
+    border-radius: 20px;
+    width: 90%;
+  }
+
+  #name-input,
+  #send-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .romantic-line {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+
+  .romantic-line.delay-1 {
+    font-size: clamp(1.2rem, 5vw, 1.8rem);
+  }
+
+  .romantic-line.large {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+  }
+}
