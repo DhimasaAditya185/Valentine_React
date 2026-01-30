@@ -276,11 +276,21 @@ canvas.addEventListener('click', (e) => {
 
 let scrollProgress = 0;
 let targetScrollProgress = 0;
+const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
+// Use passive listener for better mobile scroll performance
 window.addEventListener('scroll', () => {
   const max = document.body.scrollHeight - window.innerHeight;
   targetScrollProgress = window.scrollY / max;
-});
+}, { passive: true });
+
+// Also listen for touch events on mobile
+if (isMobileDevice) {
+  document.addEventListener('touchmove', () => {
+    const max = document.body.scrollHeight - window.innerHeight;
+    targetScrollProgress = window.scrollY / max;
+  }, { passive: true });
+}
 
 // ============================================
 // EDIT NAME HERE
@@ -322,7 +332,10 @@ function animate() {
   // Mouse smoothing
   mouse.x += (mouse.targetX - mouse.x) * 0.05;
   mouse.y += (mouse.targetY - mouse.y) * 0.05;
-  scrollProgress += (targetScrollProgress - scrollProgress) * 0.1;
+
+  // Faster scroll smoothing on mobile for more responsive feel
+  const scrollSmoothing = isMobileDevice ? 0.2 : 0.1;
+  scrollProgress += (targetScrollProgress - scrollProgress) * scrollSmoothing;
 
   // Flowers follow mouse
   flowers.rotation.y = mouse.x * 0.25;

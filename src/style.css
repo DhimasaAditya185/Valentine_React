@@ -4,11 +4,18 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
 body {
   font-family: 'Poppins', sans-serif;
   overflow-x: hidden;
   background: linear-gradient(180deg, #1a0a15 0%, #2d1020 50%, #1a0a15 100%);
   min-height: 500vh;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
 }
 
 #canvas {
